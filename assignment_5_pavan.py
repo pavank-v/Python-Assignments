@@ -40,7 +40,6 @@ class FlipkartResult:
             product_url = soup.find('a', class_ = '_1fQZEK')
             if product_url:
                 exact_url = 'https://www.flipkart.com' + product_url['href']
-                soup = BeautifulSoup(response.content, 'html.parser')
                 
                 try:
                     product_response = requests.get(exact_url)
