@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 
 '''
-In this class a user based on the user Book input, it will return the Price and URL of the book
+In this class based on the user Book input, it will return the Price and URL of the book
 from E-Commerce websites like Amazon and FlipKart, it will also return the reviews from GoodReads
 '''
 class BookLibrary:
