@@ -12,6 +12,8 @@ class BookLibrary:
     def __init__(self,search_query):
         self.flipkart_url = f'https://www.flipkart.com/search?q={search_query}'
         self.amazon_url = f'https://www.amazon.com/s?k={search_query}'
+    '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
+   
         self.good_reads_url = f'https://www.goodreads.com/search?q={search_query}'
         self.headers = {'User-Agent':
                 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
@@ -155,8 +157,7 @@ def initialize_library():
                 'book_10' : {'author_name' : 'Jeff Bezos', 'book_name' : 'Invent and Wander'},
                 }
 
-    '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
-   
+    
     return book_list
 
 '''Printing the Dictionary as list so that it will be Easy for User to Read'''
