@@ -15,6 +15,8 @@ class BookLibrary:
     '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
    
         self.good_reads_url = f'https://www.goodreads.com/search?q={search_query}'
+        
+        '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
         self.headers = {'User-Agent':
                 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
                 'Accept-Language': 'en-US, en;q=0.5'}
@@ -157,7 +159,7 @@ def initialize_library():
                 'book_10' : {'author_name' : 'Jeff Bezos', 'book_name' : 'Invent and Wander'},
                 }
 
-    
+
     return book_list
 
 '''Printing the Dictionary as list so that it will be Easy for User to Read'''
@@ -171,7 +173,7 @@ def main():
     book_input = int(input("Enter the Book's Number:"))
     number_of_the_book = 'book_'+str(book_input)
 
-    if book_input <= 10:
+    if book_input <= 10 and book_input >= 1:
         '''
         immplemented a list for each book.
         It contains Book Name and Author Name
