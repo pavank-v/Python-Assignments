@@ -12,8 +12,6 @@ class BookLibrary:
     def __init__(self,search_query):
         self.flipkart_url = f'https://www.flipkart.com/search?q={search_query}'
         self.amazon_url = f'https://www.amazon.com/s?k={search_query}'
-    '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
-   
         self.good_reads_url = f'https://www.goodreads.com/search?q={search_query}'
         
         '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
@@ -188,12 +186,20 @@ def main():
         '''Calling the functions'''
         try:
             print(booklib.flipkart_price_and_link())
+        except requests.exceptions.RequestException as e:
+            print('Error Occured due to', e)
+        try:
             print(booklib.amazon_price_and_link())
+        except requests.exceptions.RequestException as e:
+            print('Error Occured due to', e)
+        try:
             print(booklib.reviews_from_goodreads())
         except requests.exceptions.RequestException as e:
             print('Error Occured due to', e)
+            
     else:
         print('Please Enter a valid index')
+        
 '''Calling main'''       
 if __name__ == "__main__":
     main()
