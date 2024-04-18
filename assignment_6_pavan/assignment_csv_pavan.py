@@ -42,12 +42,12 @@ class SalesScript:
         desired_col_ships = self.max_sales_ships[['ORDERNUMBER', 'PRODUCTLINE']]
         
         return f'\
-                The Top Performer in sales for MotorCycles is:\n{desired_col_bike}\n\
-                The Top Performer in sales for Classic Cars is:\n{desired_col_cars}\n\
-                The Top Performer in sales for Trucks and Buses is:\n{desired_col_truck_bus}\n\
-                The Top Performer in sales for Vintage Cars is:\n{desired_col_vcars}\n\
-                The Top Performer in sales for Planes is:\n{desired_col_planes}\n\
-                The Top Performer in sales for Ships is:\n{desired_col_ships}\n'
+        The Top Performer in sales for MotorCycles is:\n{desired_col_bike}\n\
+        The Top Performer in sales for Classic Cars is:\n{desired_col_cars}\n\
+        The Top Performer in sales for Trucks and Buses is:\n{desired_col_truck_bus}\n\
+        The Top Performer in sales for Vintage Cars is:\n{desired_col_vcars}\n\
+        The Top Performer in sales for Planes is:\n{desired_col_planes}\n\
+        The Top Performer in sales for Ships is:\n{desired_col_ships}\n'
                 
     '''This function will return the Products which most Quantities sold'''           
     def most_quantities_ordered(self):
@@ -66,12 +66,12 @@ class SalesScript:
         desired_col_ships = max_quantities_ordered_ships[['ORDERNUMBER', 'PRODUCTLINE']]
         
         return f'\
-                The Top Performer in Quantities Ordered for MotorBikes is:\n{desired_col_bike}\n\
-                The Top Performer in Quantities Ordered for Classic Cars is:\n{desired_col_cars}\n\
-                The Top Performer in Quantities Ordered for Trucks and Buses is:\n{desired_col_truck_bus}\n\
-                The Top Performer in Quantities Ordered for Vintage Cars is:\n{desired_col_vcars}\n\
-                The Top Performer in Quantities Ordered for Planes is:\n{desired_col_planes}\n \
-                The Top Performer in Quantities Ordered for Ships is:\n{desired_col_ships}'
+        The Top Performer in Quantities Ordered for MotorBikes is:\n{desired_col_bike}\n\
+        The Top Performer in Quantities Ordered for Classic Cars is:\n{desired_col_cars}\n\
+        The Top Performer in Quantities Ordered for Trucks and Buses is:\n{desired_col_truck_bus}\n\
+        The Top Performer in Quantities Ordered for Vintage Cars is:\n{desired_col_vcars}\n\
+        The Top Performer in Quantities Ordered for Planes is:\n{desired_col_planes}\n \
+        The Top Performer in Quantities Ordered for Ships is:\n{desired_col_ships}'
                 
     '''This function will return the Profit of Single unit of Top Products'''           
     def profit_for_top_products(self):
@@ -84,12 +84,12 @@ class SalesScript:
         self.profit_for_single_ship = self.max_sales_ships['PRICE'] - self.max_sales_ships['MSRP']
         
         return f'\
-                Profit for Single Unit of MotorCycle is:{self.usd_to_inr(self.profit_for_single_bike):.2f}\n\
-                Profit for Single Unit of Classic Cars is:{self.usd_to_inr(self.profit_for_single_car):.2f}\n\
-                Profit for Single Unit of Trucks and Buses is:{self.usd_to_inr(self.profit_for_single_truck_bus):.2f}\n\
-                Profit for Single Unit of Vintage Cars is:{self.usd_to_inr(self.profit_for_single_vcar):.2f}\n\
-                Profit for Single Unit of Planes is:{self.usd_to_inr(self.profit_for_single_plane):.2f}\n\
-                Profit for Single Unit of Ships is:{self.usd_to_inr(self.profit_for_single_ship):.2f}\n'
+        Profit for Single Unit of MotorCycle is:{self.usd_to_inr(self.profit_for_single_bike):.2f}\n\
+        Profit for Single Unit of Classic Cars is:{self.usd_to_inr(self.profit_for_single_car):.2f}\n\
+        Profit for Single Unit of Trucks and Buses is:{self.usd_to_inr(self.profit_for_single_truck_bus):.2f}\n\
+        Profit for Single Unit of Vintage Cars is:{self.usd_to_inr(self.profit_for_single_vcar):.2f}\n\
+        Profit for Single Unit of Planes is:{self.usd_to_inr(self.profit_for_single_plane):.2f}\n\
+        Profit for Single Unit of Ships is:{self.usd_to_inr(self.profit_for_single_ship):.2f}\n'
     
     '''This Function will return the Total Profit gained by the Top Products'''
     def total_profit(self):
@@ -102,12 +102,12 @@ class SalesScript:
         profit_for_ships = self.profit_for_single_ship * self.max_sales_ships['QUANTITYORDERED']
         
         return f'\
-                The Total Profit for MotorCycles is:{self.usd_to_inr(profit_for_bikes):.2f}\n\
-                The Total Profit for Cars is :{self.usd_to_inr(profit_for_cars):.2f}\n\
-                The Total Profit for Trucks and Buses is:{self.usd_to_inr(profit_for_truck_bus):.2f}\n\
-                The Total Profit for Vintage Cars is:{self.usd_to_inr(profit_for_vcars):.2f}\n\
-                The Total Profit for Planes is:{self.usd_to_inr(profit_for_planes):.2f}\n\
-                The Total Profit for Ships is:{self.usd_to_inr(profit_for_ships):.2f}\n'
+        The Total Profit for MotorCycles is:{self.usd_to_inr(profit_for_bikes):.2f}\n\
+        The Total Profit for Cars is :{self.usd_to_inr(profit_for_cars):.2f}\n\
+        The Total Profit for Trucks and Buses is:{self.usd_to_inr(profit_for_truck_bus):.2f}\n\
+        The Total Profit for Vintage Cars is:{self.usd_to_inr(profit_for_vcars):.2f}\n\
+        The Total Profit for Planes is:{self.usd_to_inr(profit_for_planes):.2f}\n\
+        The Total Profit for Ships is:{self.usd_to_inr(profit_for_ships):.2f}\n'
                 
     '''In this function it will calculate the profit of each and every product and will create a new column called 'PROFIT'.
         The Output will be stored in the given file location'''        
@@ -183,7 +183,10 @@ def main():
     sales_df[['SALES', 'PRICE', 'MSRP', 'QUANTITYORDERED']] = \
         sales_df[['SALES', 'PRICE', 'MSRP', 'QUANTITYORDERED']].astype(float)
 
+    #Object Creation
     sales_record = SalesScript(sales_df)
+    
+    #Calling the functions
     print(sales_record.list_of_products())
     print(sales_record.top_sales())
     print(sales_record.most_quantities_ordered())
