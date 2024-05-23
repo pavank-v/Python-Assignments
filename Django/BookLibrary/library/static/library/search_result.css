@@ -1,105 +1,118 @@
-body{
-    font-family: Arial, sans-serif;
+/* General Styles */
+body {
+    font-family: 'Amazon Ember', Arial, sans-serif;
+    background-color: #eaeaea;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-}
-
-.heading{
-    font-size:35px;
-    font-weight: bold;
 }
 
 .container {
-    max-width: 1250px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 20px;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
 }
 
+/* Heading */
+.heading p {
+    text-align: center;
+    color: white;
+    background-color: black;
+    padding: 20px;
+    font-size: 24px;
+    border-bottom: 2px solid black;
+}
+
+/* Book Section */
 .book {
+    background: #fff;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-bottom: 20px;
+    flex-direction: row;
+    align-items: flex-start;
 }
 
 .book img {
-    max-width:400px;
-    height: auto;
-    margin-bottom: 10px;
+    max-width: 300px;
+    margin-right: 100px;
+}
+
+.book-align {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .book-title {
-    font-size: 25px;
-    margin-bottom: 10px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight:bold;
+    color: #111;
+    margin: 10px 0;
 }
 
+/* Book Links and Additional Info */
+.book-links, .additional-info {
+    margin: 10px 0;
+}
 
-.book-links {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
+.book-links p, .additional-info p {
+    font-weight: bold;
+    margin: 5px 0;
 }
 
 .buy-now-link {
-    padding-top:20px;
     display: inline-block;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
     text-decoration: none;
-    overflow: hidden;
-    width: 150px;
-    height: 70px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-
-.buy-now-icon-amazon,
-.buy-now-icon-flipkart {
-    padding-top:4px;
-    width: 90%;
-    display: block;
-    object-fit: cover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
-    border-radius: 10px;
+.buy-now-link:hover {
+    background-color: white;
+    color: black;
 }
 
-.buy-now-icon-amazon:hover{
-    transform: scale(1.1);
-}
-.buy-now-icon-flipkart:hover{
-    transform: scale(1.1);
-}
-
+/* Good Reads */
 .good-reads {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding-left: 50px;
+    margin: 10px 0;
 }
 
-.good-reads-icon {
-    padding-top:10px;
-    width:19%;
+.good-reads img {
+    max-width: 45px;
+    margin-right: 10px;
 }
-.good-reads-rating{
-    font-size: 17px;
+
+.good-reads-rating {
+    font-size: 16px;
+    color: #111;
+}
+
+/* Add to Favorites */
+form {
+    margin-top: 10px;
+}
+
+form button {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
     font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 10px;
 }
 
-.good-reads-icon:hover {
-    transform: scale(1.1);
-}
-
-.good-reads:hover .good-reads-rating {
-    font-weight: bold;
-    color: blue;
-}
-
-.book-align{
-    display:flex;
-    justify-content: center;
+form button:hover {
+    background-color: white;
+    color: black;
 }

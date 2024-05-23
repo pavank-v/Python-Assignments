@@ -1,36 +1,37 @@
-{% extends "library/base.html" %}{% block content %}
+{% extends "library/base.html" %}
+{% block content %}
 <head>
     <title>Search History</title>
-        {% load static %}
-    <link rel="stylesheet" href="{% static 'library/favourites.css' %}">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'library/books.css' %}">
 </head>
 
 <body>
-    <p style="display:flex; justify-content:center;font-size:35px;font-weight: bold;color:white"> Recently Searched Books </p>
-    <div class="container">
-        {% if search_history%}
-        {% for book in search_history %}
-            <div class="book">
-                <img src="{{ book.cover_image }}" alt="{{ book.title }}">
-                <h3 class="book-title">{{ book.title }}</h3>
-                <div class="book-links">
-                    <a href="{{ book.amazon_url }}" class="buy-now-link">
-                        <img src="{% static 'logo/amazon.jpg' %}"  alt="Buy Now at Amazon" class="buy-now-icon-amazon">
-                    </a>
-                    <a href="{{ book.flipkart_url }}" class="buy-now-link">
-                        <img src="{% static 'logo/flipkart.png' %}" alt="Buy Now at Flipkart" class="buy-now-icon-flipkart">
-                    </a>
+    {% if search_history %}
+        <p style="display:flex; justify-content:center; font-size:35px; font-weight: bold; color:black;">The Books You Searched are...</p>
+        <div class="container">
+            {% for book in search_history %}
+                <div class="book">
+                    <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="book-cover">
+                    <h3 class="book-title">{{ book.title }}</h3>
+                    <div class="book-links">
+                        <a href="{{ book.amazon_url }}" class="buy-now-link">Amazon</a>
+                        <a href="{{ book.flipkart_url }}" class="buy-now-link">Flipkart</a>
+                    </div>
+                    <div class="good-reads">
+                        <img src="{% static 'logo/good reads.png' %}" alt="Good Reads Rating" class="good-reads-icon">
+                        <p class="good-reads-rating">{{ book.good_reads_review }}</p>
+                    </div>
                 </div>
-                <div class="good-reads">
-                    <img src="{% static 'logo/good reads.png' %}" alt="Good Reads Rating" class="good-reads-icon">
-                    <p class='good-reads-rating'>{{ book.good_reads_review }}</p>
-                </div>
-            </div>
-        {% endfor %}
-        {% else %}
-        Nothing to display
-        {% endif %}
-
+            {% endfor %}
+        </div>
+    {% else %}
+    <div class="not-found-container">
+        <div class="not-found-content">
+            <img src="{% static 'logo/not found.png' %}" alt="No Books" class="not-found">
+            <p class="not-found-message">You haven't searched any books yet.</p>
+        </div>
     </div>
+    {% endif %}
 </body>
 {% endblock %}

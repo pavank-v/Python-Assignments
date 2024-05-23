@@ -1,140 +1,128 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse
-from datetime import datetime
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 
-from .forms import SearchBook, UserLoginForm, UserRegisterForm
-from .models import Book, SearchHistory, Users
-from .scrapping import BookDetails
+from .forms import SearchBook
+from .models import Book, SearchHistory
+from .book_details import BookDetails
+from .serializers import BookSerializer
+from .recommendations import Recommendations
 
-
-def home(request):
-    if request.user.is_authenticated:
-        return render(request, 'library/home.html')
-    else:
-        return render(request, 'library/signin.html')
+'''Home Page View'''
+class Home(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
     
-@login_required(login_url='signin') 
-def search_books(request):
-    if request.method == 'POST':
-        form = SearchBook(request.POST)
-        if form.is_valid():
-            title = form.cleaned_data['title']
+    def home(request):
+        if request.user.is_authenticated:
+            return render(request, 'library/home.html')
+        else:
+            return render(request, 'authentication/signin.html')
+        
+'''This class returns the Search result of the Book'''
+class SearchBooks(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    
+    def get(self, request, format=None):
+        input_serializer = BookSerializer()
+        return render(request, 'library/base.html', {'form':input_serializer})
+
+    def post(self, request, format=None):
+        input_serializer = BookSerializer(data=request.data)
+        if input_serializer.is_valid():
+            title = input_serializer.validated_data['title'].title()
             details = BookDetails(title)
             amazon_url = details.amazon_link
             flipkart_url = details.flipkart_link
             good_reads_review = details.good_reads_review
             cover_image = details.cover_image
-            
             # Record search history
-            if not SearchHistory.objects.filter(title=title).exists():
-                SearchHistory.objects.create(
+            if not SearchHistory.objects.filter(title=title, user=request.user).exists():
+                search = SearchHistory.objects.get_or_create(
+                    user = request.user,
                     title=title,
-                    cover_image=cover_image,
-                    amazon_url=amazon_url,
-                    flipkart_url=flipkart_url,
-                    good_reads_review=good_reads_review
+                    defaults={
+                        'cover_image': cover_image,
+                        'amazon_url': amazon_url,
+                        'flipkart_url': flipkart_url,
+                        'good_reads_review': good_reads_review
+                    }
                 )
+                if isinstance(search, tuple):
+                    search = search[0]
+            else:
+                search = SearchHistory.objects.get(title=title, user=request.user)
+            
+            
+            output_serializer = BookSerializer(search)
             context = {
-                'title':title,
-                'amazon_url':amazon_url,
-                'flipkart_url':flipkart_url,
-                'good_reads_review':good_reads_review,
-                'cover_image':cover_image,
+                'book_data':output_serializer.data
             }
             return render(request, 'library/search_result.html', context)
-    else:
-        form = SearchBook()
         
-    return render(request, 'library/base.html', {'form':form})
-
-@login_required(login_url='signin')
-def add_to_favorites(request):
-    if request.method == 'POST':
-        user = request.user
+'''This class adds the book to favorite page'''       
+class AddToFavorite(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    
+    def post(self, request, format=None):
         title = request.POST.get('title')
         cover_image = request.POST.get('cover_image')
         amazon_url = request.POST.get('amazon_url')
         flipkart_url = request.POST.get('flipkart_url')
         good_reads_review = request.POST.get('good_reads_review')
-        
+
         if not Book.objects.filter(title=title).exists():
-            Book.objects.create(
-                    user=user,
+            Book.objects.get_or_create(
                     title=title,
-                    cover_image=cover_image,
-                    amazon_url=amazon_url,
-                    flipkart_url=flipkart_url,
-                    good_reads_review=good_reads_review,
+                    user=request.user,
+                    defaults={
+                        'cover_image': cover_image,
+                        'amazon_url': amazon_url,
+                        'flipkart_url': flipkart_url,
+                        'good_reads_review': good_reads_review
+                    }
                 )
-        return redirect('favourites') 
+        return redirect('favorites') 
+    
+    def get(self, request, format=None):
+        return redirect('home')
 
-    return redirect('home')
+'''This class returns the list of favorite books'''
+class Favorites(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    
+    def get(self, request, format=None):
+        books = Book.objects.filter(user=request.user).order_by('-id')
+        return render(request, "library/favorites.html",{'books':books})
 
-@login_required(login_url='signin')
-def favourites(request):
-    books = Book.objects.all()
-    return render(request, "library/favourites.html",{'books':books})
-
-@login_required(login_url='signin')
-def base(request):
-    form = SearchBook()
-    return render(request, 'library/base.html', {'form': form})
-
-@login_required(login_url='signin')
-def search_history(request):
-    search_history = SearchHistory.objects.all()
-    return render(request, 'library/search_history.html', {'search_history': search_history})
-
-
-def signup(request):
-    context = {}
-    if request.method == 'POST':
-        name_r = request.POST.get('name')
-        email_r = request.POST.get('email')
-        password_r = request.POST.get('password')
-        user = User.objects.create_user(name_r, email_r, password_r, )
-        if user:
-            login(request, user)
-            return render(request, 'library/thank.html')
-        else:
-            context["error"] = "Provide valid credentials"
-            return render(request, 'library/signup.html', context)
-    else:
-        return render(request, 'library/signup.html', context)
-
-
-def signin(request):
-    context = {}
-    if request.method == 'POST':
-        name_r = request.POST.get('name')
-        password_r = request.POST.get('password')
-        user = authenticate(request, username=name_r, password=password_r)
-        if user:
-            login(request, user)
-            # username = request.session['username']
-            context["user"] = name_r
-            context["id"] = request.user.id
+'''This is the Home page Base view'''
+class Base(APIView):
+    permission_classes = [AllowAny]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    
+    def get(self, request, format=None):
+        if request.user.is_authenticated:
+            form = SearchBook()
+            fiction = Recommendations.fiction()
+            non_fiction = Recommendations.non_fiction()
+            context = {
+                'form':form,
+                'fiction':fiction,
+                'non_fiction':non_fiction,
+            }
             return render(request, 'library/base.html', context)
-            # return HttpResponseRedirect('success')
         else:
-            context["error"] = "Provide valid credentials"
-            return render(request, 'library/signin.html', context)
-    else:
-        context["error"] = "You are not logged in"
-        return render(request, 'library/signin.html', context)
-
-
-def signout(request):
-    context = {}
-    logout(request)
-    context['error'] = "You have been logged out"
-    return render(request, 'library/signin.html', context)
-
-
-def success(request):
-    context = {}
-    context['user'] = request.user
-    return render(request, 'library/success.html', context)
+            return render(request, 'authentication/signin.html')
+        
+'''This Class returns the Search history'''   
+class History(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    
+    def get(self, request, format=None):
+        search_history = SearchHistory.objects.filter(user=request.user).order_by('-id')
+        return render(request, 'library/search_history.html', {'search_history': search_history})
