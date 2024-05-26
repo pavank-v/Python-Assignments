@@ -68,21 +68,16 @@ class AddToFavorite(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     
     def post(self, request, format=None):
-        title = request.POST.get('title')
-        cover_image = request.POST.get('cover_image')
-        amazon_url = request.POST.get('amazon_url')
-        flipkart_url = request.POST.get('flipkart_url')
-        good_reads_review = request.POST.get('good_reads_review')
 
-        if not Book.objects.filter(title=title).exists():
+        if not Book.objects.filter(title=request.POST.get('title')).exists():
             Book.objects.get_or_create(
-                    title=title,
+                    title=request.POST.get('title'),
                     user=request.user,
                     defaults={
-                        'cover_image': cover_image,
-                        'amazon_url': amazon_url,
-                        'flipkart_url': flipkart_url,
-                        'good_reads_review': good_reads_review
+                        'cover_image': request.POST.get('cover_image'),
+                        'amazon_url': request.POST.get('amazon_url'),
+                        'flipkart_url': request.POST.get('flipkart_url'),
+                        'good_reads_review': request.POST.get('good_reads_review')
                     }
                 )
         return redirect('favorites') 

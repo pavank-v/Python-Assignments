@@ -10,8 +10,8 @@ from .serializers import *
 
 '''This class registers the user'''
 class RegisterView(APIView):
-    permission_classes = [AllowAny]
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = []
+    authentication_classes = []
     
     def post(self, request):
         context = {}
@@ -38,8 +38,8 @@ class RegisterView(APIView):
 
 '''This class login's the user'''
 class LoginView(APIView):
-    permission_classes = [AllowAny]
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = []
+    authentication_classes = []
     
     def post(self, request):
         serializer = LoginSerializer(data=request.data)

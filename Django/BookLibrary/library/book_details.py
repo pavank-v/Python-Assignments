@@ -8,9 +8,13 @@ class BookDetails:
     
     #Initializing the urls for the methods
     def __init__(self, search_query):
-        self.flipkart_url = f'https://www.flipkart.com/search?q={search_query} Book'
-        self.amazon_url = f'https://www.amazon.com/s?k={search_query} Book'
-        self.good_reads_url = f'https://www.goodreads.com/search?q={search_query}'
+        
+        self.flipkart = 'https://www.flipkart.com'
+        self.flipkart_url = f'{self.flipkart}/search?q={search_query} Book'
+        self.amazon = 'https://www.amazon.com'
+        self.amazon_url = f'{self.amazon}/s?k={search_query} Book'
+        self.good_reads = 'https://www.goodreads.com'
+        self.good_reads_url = f'{self.good_reads}/search?q={search_query}'
         self.headers = {
             "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0",
             "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -22,7 +26,7 @@ class BookDetails:
         try:
             good_reads_response = requests.get(self.good_reads_url, headers=self.headers)
             if not good_reads_response:
-                return "https://www.goodreads.com/not-found"
+                return f"{self.good_reads}/not-found"
 
             good_reads_response_soup = BeautifulSoup(good_reads_response.content, 'html.parser') 
             book_link = good_reads_response_soup.find('a', class_='bookTitle')
@@ -40,45 +44,43 @@ class BookDetails:
             else:
                 return "The Book is not Found"
         except Exception:
-            return "https://www.goodreads.com/not-found"
+            return f"{self.good_reads}/not-found"
 
     #This function returns the Flipkart Buy link
     def flipkart_link(self):
-        time.sleep(2)
         try:
             flipkart_response = requests.get(self.flipkart_url)
             if not flipkart_response:
-                return "https://www.flipkart.com/not-found"
+                return f"{self.flipkart}/not-found"
 
             flipkart_response_soup = BeautifulSoup(flipkart_response.content, 'html.parser')
             book_in_flipkart = flipkart_response_soup.find('a', class_='VJA3rP')
                 
             if book_in_flipkart:
-                book_url_in_fk = f'https://www.flipkart.com' + book_in_flipkart['href']
+                book_url_in_fk = self.flipkart + book_in_flipkart['href']
                 return book_url_in_fk
             else:
-                return "https://www.flipkart.com/not-found"
+                return f"{self.flipkart}/not-found"
         except Exception:
-            return "https://www.flipkart.com/not-found"
+            return f"{self.flipkart}/not-found"
 
     #This function returns the Amazon Buy link
     def amazon_link(self):
-        time.sleep(2)
         try:
             amazon_response = requests.get(self.amazon_url, headers=self.headers)
             if not amazon_response:
-                return "https://www.amazon.com/not-found"
+                return f"{self.amazon}/not-found"
 
             amazon_response_soup = BeautifulSoup(amazon_response.content, 'html.parser')
             book_in_amazon = amazon_response_soup.find('a', class_='a-link-normal s-no-outline')
 
             if book_in_amazon:
-                book_url_in_ama = 'https://www.amazon.com' + book_in_amazon['href']
+                book_url_in_ama = self.amazon + book_in_amazon['href']
                 return book_url_in_ama
             else:
-                return "https://www.amazon.com/not-found"
+                return f"{self.amazon}/not-found"
         except Exception:
-            return "https://www.amazon.com/not-found"
+            return f"{self.amazon}/not-found"
 
     #This function returns the Good Reads Review
     def good_reads_review(self):
@@ -91,7 +93,7 @@ class BookDetails:
             good_reads_response = good_reads_response_soup.find('a', class_ = 'bookTitle')
             
             if good_reads_response:
-                book_url_in_gr = "https://www.goodreads.com" + good_reads_response['href']
+                book_url_in_gr = self.good_reads + good_reads_response['href']
                 good_reads_book = requests.get(book_url_in_gr, headers=self.headers)
                 if not good_reads_book:
                     return "The Book is not Available in GoodReads"
