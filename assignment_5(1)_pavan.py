@@ -15,9 +15,11 @@ class BookLibrary:
         self.good_reads_url = f'https://www.goodreads.com/search?q={search_query}'
         
         '''User Agent to Avoid the Site from Blocking "COPIED FROM DIGITAL OCEAN" '''
-        self.headers = {'User-Agent':
-                'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
-                'Accept-Language': 'en-US, en;q=0.5'}
+        self.headers = {
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0",
+            "Accept-Encoding":"gzip, deflate", "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "DNT":"1","Connection":"close", "Upgrade-Insecure-Requests":"1"
+        }
         
     '''This function will return the Price of the Book in Flipkart and URL to buy the Book'''
     def flipkart_price_and_link(self):
@@ -31,7 +33,7 @@ class BookLibrary:
         
         if flipkart_response.status_code == 200:
             flipkart_response_soup = BeautifulSoup(flipkart_response.content,'html.parser')
-            book_in_flipkart = flipkart_response_soup.find('a', class_ = 's1Q9rs')
+            book_in_flipkart = flipkart_response_soup.find('a', class_ = 'VJA3rP')
                 
             if book_in_flipkart:
                 book_url_in_fk = f'https://www.flipkart.com' + book_in_flipkart['href']
@@ -45,7 +47,7 @@ class BookLibrary:
                     
                 if flipkart_book_response.status_code == 200:
                     flipkart_book_response = BeautifulSoup(flipkart_book_response.content,'html.parser')
-                    flipkart_book_price = flipkart_book_response.find('div',class_ = '_30jeq3 _16Jk6d')
+                    flipkart_book_price = flipkart_book_response.find('div',class_ = 'Nx9bqj CxhGGd')
                     return \
                         f'The URL of the Book in FlipKart is: \n{book_url_in_fk} \n' \
                         f'The Price of the Book in FlipKart is: \n{flipkart_book_price.text}'
