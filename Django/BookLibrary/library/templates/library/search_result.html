@@ -1,0 +1,42 @@
+{% extends "library/base.html" %}{% block content %}
+<head>
+    <title>Search Result</title>
+        {% load static %}
+    <link rel="stylesheet" href="{% static 'library/search_result.css' %}">
+</head>
+<body>
+    <div class="heading">
+        <p>The Book you searched is "{{ book_data.title }}"</p>
+    </div>
+    <div class="container">
+        <div class="book">
+            <img src="{{ book_data.cover_image }}" alt="{{ book_data.title }}">
+            <div class="book-align">
+                <h3 class="book-title">{{ book_data.title }}</h3>
+                <div class="book-links">
+                    <p>Amazon link to Buy the Book</p>
+                    <a href="{{ book_data.amazon_url }}" class="buy-now-link">Buy Now at Amazon</a>
+                    <p>Flipkart link to Buy the Book</p>
+                    <a href="{{ book_data.flipkart_url }}" class="buy-now-link">Buy Now at Flipkart</a>
+                </div>
+                <div class="additional-info">
+                    <div class="good-reads">
+                        <img src="{% static 'logo/good reads.png' %}" alt="Good Reads Rating" class="good-reads-icon">
+                        <p class="good-reads-rating">The Rating of the Book in Good Reads is "{{ book_data.good_reads_review }}"</p>
+                    </div>
+                    <form method="POST" action="{% url 'add_to_favorites' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="title" value="{{ book_data.title }}">
+                        <input type="hidden" name="cover_image" value="{{ book_data.cover_image }}">
+                        <input type="hidden" name="amazon_url" value="{{ book_data.amazon_url }}">
+                        <input type="hidden" name="flipkart_url" value="{{ book_data.flipkart_url }}">
+                        <input type="hidden" name="good_reads_review" value="{{ book_data.good_reads_review }}">
+                        <button type="submit" name="favorite">Add to Favorites</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock %}
