@@ -1,0 +1,37 @@
+{% extends "library/base.html" %}
+{% block content %}
+<head>
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'library/books.css' %}">
+</head>
+
+<body>
+    {% if books %}
+        <p style="display:flex; justify-content:center; font-size:35px; font-weight: bold; color:black;">Your Favorite Books are...</p>
+        <div class="container">
+            {% for book in books %}
+                <div class="book">
+                    <img src="{{ book.cover_image }}" alt="{{ book.title }}" class="book-cover">
+                    <h3 class="book-title">{{ book.title }}</h3>
+                    <div class="book-links">
+                        <a href="{{ book.amazon_url }}" class="buy-now-link">Amazon</a>
+                        <a href="{{ book.flipkart_url }}" class="buy-now-link">Flipkart</a>
+                    </div>
+                    <div class="good-reads">
+                        <img src="{% static 'logo/good reads.png' %}" alt="Good Reads Rating" class="good-reads-icon">
+                        <p class="good-reads-rating">{{ book.good_reads_review }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+    <div class="not-found-container">
+        <div class="not-found-content">
+            <img src="{% static 'logo/not found.png' %}" alt="No Favorite Books" class="not-found">
+            <p class="not-found-message">You have no favorite books yet. Start adding some!</p>
+        </div>
+    </div>
+    {% endif %}
+</body>
+{% endblock %}
