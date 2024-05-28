@@ -37,7 +37,7 @@ class FlipkartResult:
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, 'html.parser')
 
-            product_url = soup.find('a', class_ = '_1fQZEK')
+            product_url = soup.find('a', class_ = 'VJA3rP')
             if product_url:
                 exact_url = 'https://www.flipkart.com' + product_url['href']
                 
