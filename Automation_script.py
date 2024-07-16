@@ -4,6 +4,7 @@ Based on the Extension Name'''
 import os
 import shutil
 import collections
+from pprint import pprint
 
 # All possible extensions
 PICTURE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'tif',
@@ -43,10 +44,14 @@ DOWN_PATH = os.path.join(BASE_PATH, 'Downloads')
 files = collections.defaultdict(list)#Using Defaultdict instead of dict to prevent key error
 files_list = os.listdir(DOWN_PATH)
 
+# pprint(files_list)
+
 for file_name in files_list:
     if not file_name.startswith('.'):
         file_ext = file_name.split('.')[-1].lower()
         files[file_ext].append(file_name)
+
+pprint(files)
 
 # Move files to respective directories
 for ext, file_list in files.items():
