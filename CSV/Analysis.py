@@ -3,7 +3,6 @@ import time
 import pandas as pd
 from bs4 import BeautifulSoup
 import requests
-import csv
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -83,13 +82,13 @@ class SalesScript:
         self.profit_for_single_plane = self.max_sales_planes['PRICE'] - self.max_sales_planes['MSRP']
         self.profit_for_single_ship = self.max_sales_ships['PRICE'] - self.max_sales_ships['MSRP']
         
-        return f'\
+        return f"\
                 Profit for Single Unit of MotorCycle is:{self.usd_to_inr(self.profit_for_single_bike):.2f}\n\
                 Profit for Single Unit of Classic Cars is:{self.usd_to_inr(self.profit_for_single_car):.2f}\n\
                 Profit for Single Unit of Trucks and Buses is:{self.usd_to_inr(self.profit_for_single_truck_bus):.2f}\n\
                 Profit for Single Unit of Vintage Cars is:{self.usd_to_inr(self.profit_for_single_vcar):.2f}\n\
                 Profit for Single Unit of Planes is:{self.usd_to_inr(self.profit_for_single_plane):.2f}\n\
-                Profit for Single Unit of Ships is:{self.usd_to_inr(self.profit_for_single_ship):.2f}\n'
+                Profit for Single Unit of Ships is:{self.usd_to_inr(self.profit_for_single_ship):.2f}\n"
     
     '''This Function will return the Total Profit gained by the Top Products'''
     def total_profit(self):
@@ -118,7 +117,7 @@ class SalesScript:
         all_profit.drop(['ORDERDATE', 'STATUS', 'YEAR', 'CUSTOMERNAME', 'CITY', 'STATE', 'POSTALCODE', 'CONTACTFIRSTNAME', 'CONTACTLASTNAME'], axis = 1, inplace=True)
         data = all_profit.to_csv()
         
-        csv_output_file = 'assignment_6_pavan\output.csv'
+        csv_output_file = 'CSV\output.csv'
         with open(csv_output_file,'w',newline='') as file:
             file.write(data)
         
@@ -174,10 +173,9 @@ def main():
     
     '''Reading the file using open'''
     time.sleep(1)
-    csvfile = open(r'assignment_6_pavan\sales_data.csv',newline='')
-    x = csv.DictReader(csvfile, delimiter=',')
+    csvfile = open(r'CSV\sales_data.csv',newline='')
     '''Creating a DataFrame'''
-    sales_df = pd.DataFrame(x)
+    sales_df = pd.read_csv(csvfile)
     
     ''' Converting the columns datatype for calculations'''
     sales_df[['SALES', 'PRICE', 'MSRP', 'QUANTITYORDERED']] = \
