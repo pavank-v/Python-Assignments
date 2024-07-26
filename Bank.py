@@ -24,7 +24,9 @@ class BankAccount:
     
     def get_account_details(self):
         """Get account details such as account number, holder name, and type."""
-        return f"Account Number: {self.account_no}\nAccount Holder: {self.account_holder_name}\nAccount Type: {self.account_type}"
+        return f"Account Number: {self.account_no}\
+                Account Holder: {self.account_holder_name}\
+                Account Type: {self.account_type}"
     
     def check_balance_status(self):
         """Check if the account balance is above the minimum required."""
